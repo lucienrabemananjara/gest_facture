@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Facture index{% endblock %}
+
+{% block body %}
+    <h1>Liste facture</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom client</th>
+                <th>Code produit</th>
+                <th>Désignation</th>
+                <th>Quantité</th>
+                <th>Prix unitaire</th>
+                <th>Montant</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+         {% set total = 0 %}
+        {% for facture in factures %}
+        {% set montant = facture.pu * facture.quantite %}
+        {% set total = total+montant %}
+        
+            <tr>
+                <td>{{ facture.id }}</td>
+                <td>{{ facture.client.nom }}</td>
+                <td>{{ facture.produit.code }}</td>
+                <td>{{ facture.designation }}</td>
+                <td>{{ facture.quantite }}</td>
+                <td>{{ facture.pu }}</td>
+                <td>{{ montant }}</td>
+                <td>
+                    <a href="{{ path('app_facture_show', {'id': facture.id}) }}" class="btn btn-primary">show</a>
+                    <a href="{{ path('app_facture_edit', {'id': facture.id}) }}" class="btn btn-success">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+         {#<tr>
+            <th colspan="4" class="motantTotal">Montant TTC : {{total}} €</th>
+         </tr>#}
+          <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Total</td>
+                    <td> {{ total }} €  </td>
+
+                    </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_facture_new') }}" class="btn btn-primary">Ajout</a>
+{% endblock %}
